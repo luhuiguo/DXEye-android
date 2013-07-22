@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/imageView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:contentDescription=""/>
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnUp"
+            android:src="@drawable/arrow_up"
+            android:layout_above="@+id/btnLeft"
+            android:layout_alignLeft="@+id/btnDown"/>
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnLeft"
+            android:src="@drawable/arrow_left"
+            android:layout_above="@+id/btnDown"
+            android:layout_alignParentLeft="true"/>
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnDown"
+            android:src="@drawable/arrow_down"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/btnLeft"/>
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnRight"
+            android:src="@drawable/arrow_right"
+            android:layout_above="@+id/btnDown"
+            android:layout_toRightOf="@+id/btnDown"/>
+
+    <ZoomControls
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/zoomControls"
+            android:layout_below="@+id/btnUp"
+            android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
