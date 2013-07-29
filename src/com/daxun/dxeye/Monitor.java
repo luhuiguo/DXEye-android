@@ -1,9 +1,6 @@
 package com.daxun.dxeye;
 
-import android.graphics.Bitmap;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
+import java.net.InetSocketAddress;
 
 import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IdleStatus;
@@ -12,146 +9,186 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
-import java.net.InetSocketAddress;
-
-import static com.daxun.dxeye.Constants.*;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.widget.ImageView;
 
 /**
  * Created by luhuiguo on 13-7-19.
  */
 public class Monitor implements IoHandler {
 
-    private static final int MSG_SUCCESS = 0;
-    private static final int MSG_FAILURE = 1;
-    private static final int MSG_FRAME = 2;
-    private static final int MSG_INVALID_PACKET= 3;
-    private static final int MSG_NOT_VIDEO_PACKET= 4;
-    private static final int MSG_UNSUPPORTED_CODEC= 5;
-    private static final int MSG_OPEN_DECODER_FAILED= 6;
-    private static final int MSG_WAIT_KEY_FRAME= 7;
-    private static final int MSG_VIDEO_DECODE_FAILED= 8;
+	private static final int MSG_SUCCESS = 0;
+	private static final int MSG_FAILURE = 1;
+	private static final int MSG_FRAME = 2;
 
+	private static final String TAG = Monitor.class.getSimpleName();
 
-    private static final String TAG = Monitor.class.getSimpleName();
+	private Channel channel;
 
+	private int mVideoWidth;
+	private int mVideoHeight;
 
-    private Channel channel;
+	private Bitmap bitmap = Bitmap.createBitmap(320, 240,
+			Bitmap.Config.ARGB_8888);
 
-    private Bitmap bitmap;
+	private int stream;
 
-    private int stream;
+	private IoSession session;
 
-    private IoSession session;
+	private Extractor extractor = new Extractor();
 
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-//                case MSG_SUCCESS:
-//
-//                    break;
-//
-//                case MSG_FAILURE:
-//
-//                    break;
-            }
-        }
-    };
+	private static Handler mHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_SUCCESS:
 
-    private Thread mThread;
+				break;
 
+			case MSG_FAILURE:
 
-    public Monitor(Channel channel) {
+				break;
+			case MSG_FRAME:
 
-        this.channel = channel;
-    }
+			
+				break;
+			}
+		}
+	};
 
-    public void play(int stream) {
-        this.stream = stream;
+	private Thread mThread;
 
-        if (mThread == null) {
-            mThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    NioSocketConnector connector = new NioSocketConnector();
-                    connector.setConnectTimeoutMillis(10000);
+	public Monitor(Channel channel) {
 
-                    connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new SNVRCodecFactory()));
-                    connector.getFilterChain().addLast("logger", new LoggingFilter());
-                    connector.setHandler(Monitor.this);
+		this.channel = channel;
+	}
 
-                    session = connector.connect(new InetSocketAddress(SNVRClient.getInstance().getHost(), SNVRClient.getInstance().getPort())).awaitUninterruptibly().getSession();
+	public Channel getChannel() {
+		return channel;
+	}
 
-                }
-            });
+	public void setChannel(Channel channel) {
+		this.channel = channel;
+	}
 
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
 
-        }
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
+	}
 
-        mThread.start();
+	public void play(int stream) {
 
+		this.stream = stream;
 
-    }
+		if (mThread == null) {
+			mThread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					NioSocketConnector connector = new NioSocketConnector();
+					connector.setConnectTimeoutMillis(10000);
 
-    public void stop() {
+					connector.getFilterChain().addLast("codec",
+							new ProtocolCodecFilter(new SNVRCodecFactory()));
+					connector.getFilterChain().addLast("logger",
+							new LoggingFilter());
+					connector.setHandler(Monitor.this);
 
-    }
+					session = connector
+							.connect(
+									new InetSocketAddress(SNVRClient
+											.getInstance().getHost(),
+											SNVRClient.getInstance().getPort()))
+							.awaitUninterruptibly().getSession();
 
+				}
+			});
 
-    @Override
-    public void sessionCreated(IoSession session) throws Exception {
+		}
 
-    }
+		mThread.start();
 
-    @Override
-    public void sessionOpened(IoSession session) throws Exception {
-        session.write(new PreviewRequest(SNVRClient.getInstance().getToken(),(short)channel.getId(),stream));
+	}
 
-    }
+	public void stop() {
+		session.close(true);
 
-    @Override
-    public void sessionClosed(IoSession session) throws Exception {
+	}
 
-    }
+	@Override
+	public void sessionCreated(IoSession session) throws Exception {
 
-    @Override
-    public void sessionIdle(IoSession session, IdleStatus idleStatus) throws Exception {
+	}
 
-    }
+	@Override
+	public void sessionOpened(IoSession session) throws Exception {
+		session.write(new PreviewRequest(SNVRClient.getInstance().getToken(),
+				(short) channel.getId(), stream));
 
-    @Override
-    public void exceptionCaught(IoSession session, Throwable throwable) throws Exception {
-        Log.d(TAG,"exceptionCaught",throwable);
-        session.close(true);
-    }
+	}
 
-    @Override
-    public void messageReceived(IoSession session, Object message) throws Exception {
-        Log.d(TAG,"messageReceived: "+message);
-        if(message instanceof PreviewResponse){
-            PreviewResponse previewResponse = (PreviewResponse) message;
+	@Override
+	public void sessionClosed(IoSession session) throws Exception {
 
-            if (previewResponse.getStatus() == 0){
-                mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
-            }else{
-                mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
-            }
+	}
 
-        }else if(message instanceof PreviewData){
-            PreviewData previewData = (PreviewData) message;
-            Payload p = previewData.getPayload();
-            Bitmap bitmap =  Bitmap.createBitmap(320, 240, Bitmap.Config.ARGB_8888);
-            int ret = Extractor.extractFrame(p,bitmap);
-            Log.d(TAG,"ret: "+ret);
+	@Override
+	public void sessionIdle(IoSession session, IdleStatus idleStatus)
+			throws Exception {
 
+	}
 
-            mHandler.obtainMessage(MSG_FRAME,bitmap).sendToTarget();
+	@Override
+	public void exceptionCaught(IoSession session, Throwable throwable)
+			throws Exception {
+		Log.d(TAG, "exceptionCaught", throwable);
+		session.close(true);
+	}
 
-        }
+	@Override
+	public void messageReceived(IoSession session, Object message)
+			throws Exception {
+		Log.d(TAG, "messageReceived: " + message);
+		if (message instanceof PreviewResponse) {
+			PreviewResponse previewResponse = (PreviewResponse) message;
 
-    }
+			if (previewResponse.getStatus() == 0) {
+				mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
+			} else {
+				mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
+			}
 
-    @Override
-    public void messageSent(IoSession session, Object o) throws Exception {
+		} else if (message instanceof PreviewData) {
+			PreviewData previewData = (PreviewData) message;
+			Payload p = previewData.getPayload();
+//			mVideoWidth = p.getWidth();
+//			mVideoHeight = p.getHeight();
+//			Bitmap b = bitmap;
+//			if(p.getWidth()>0 && p.getHeight() >0){
+//				b = Bitmap.createBitmap(mVideoWidth, mVideoHeight,
+//						Bitmap.Config.ARGB_8888);				
+//			}
 
-    }
+			int ret = extractor.extract(p, bitmap);
+
+			Log.d(TAG, "ret: " + ret + " count:" + bitmap.getByteCount()
+					+ " width:" + bitmap.getWidth());
+			if (ret < 0) {
+
+			} else {
+				//bitmap = b;
+				mHandler.obtainMessage(MSG_FRAME, bitmap).sendToTarget();
+			}
+		}
+
+	}
+
+	@Override
+	public void messageSent(IoSession session, Object o) throws Exception {
+
+	}
 }

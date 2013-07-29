@@ -12,4 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include $(all-subdir-makefiles)
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+
+LOCAL_CFLAGS := -D__STDC_CONSTANT_MACROS
+    
+LOCAL_MODULE    := eye
+LOCAL_SRC_FILES := Extractor.cpp
+
+LOCAL_SHARED_LIBRARIES := \
+    libffmpeg
+LOCAL_LDLIBS += -llog -ljnigraphics
+
+include $(BUILD_SHARED_LIBRARY)

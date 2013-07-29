@@ -18,7 +18,7 @@ import static com.daxun.dxeye.Constants.HEADER_LEN;
  */
 public abstract class SNVRMessageDecoder implements MessageDecoder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SNVRMessageDecoder.class);
+    private static final Logger logger = LoggerFactory.getLogger(SNVRMessageDecoder.class);
 
     public static final CharsetDecoder UTF8_DECODER = Charset.forName("UTF-8").newDecoder();
 
@@ -58,7 +58,7 @@ public abstract class SNVRMessageDecoder implements MessageDecoder {
     @Override
     public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
 
-        LOGGER.debug("decode: {}", in.getHexDump());
+        //logger.debug("decode: {}", in.getHexDump());
 
         if (!readHeader) {
             in.getInt(); //skip size
@@ -91,7 +91,7 @@ public abstract class SNVRMessageDecoder implements MessageDecoder {
 
     @Override
     public void finishDecode(IoSession session, ProtocolDecoderOutput out) throws Exception {
-
+    	logger.debug("finishDecode");
     }
 
     protected abstract SNVRMessage decodeBody(IoSession session, IoBuffer in) throws Exception;
