@@ -40,7 +40,7 @@ public abstract class SNVRMessageDecoder implements MessageDecoder {
 
     @Override
     public MessageDecoderResult decodable(IoSession session, IoBuffer in) {
-
+    	//logger.error("decodable session:{} in:{}",session,in);
         if (in.remaining() < HEADER_LEN) {
             return MessageDecoderResult.NEED_DATA;
         }
@@ -57,8 +57,9 @@ public abstract class SNVRMessageDecoder implements MessageDecoder {
 
     @Override
     public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
-
-        //logger.debug("decode: {}", in.getHexDump());
+    	//logger.error("decode session:{} in:{}",session,in);
+    	//logger.error("size:{}",size);
+        //logger.debug("session: {} decode: {}", session, in.getHexDump());
 
         if (!readHeader) {
             in.getInt(); //skip size
@@ -68,6 +69,7 @@ public abstract class SNVRMessageDecoder implements MessageDecoder {
             target = in.getInt();
             readHeader = true;
         }
+        
 
         if (in.remaining() < size - HEADER_LEN) {
             return MessageDecoderResult.NEED_DATA;
@@ -81,6 +83,7 @@ public abstract class SNVRMessageDecoder implements MessageDecoder {
         } else {
             readHeader = false;
         }
+        //logger.error("decodeBody remaining {} {}",in.remaining(),size);
         m.setSize(size);
         m.setNetwork(network);
         m.setSource(source);

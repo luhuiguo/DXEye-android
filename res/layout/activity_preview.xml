@@ -1,55 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <ImageView
+    <com.daxun.dxeye.Monitor
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:id="@+id/imageView"
+            android:layout_height="match_parent"
+            android:id="@+id/monitor"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:contentDescription=""/>
+            android:layout_centerHorizontal="true"/>
+
+    <ImageButton
+        android:id="@+id/btnUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnLeft"
+        android:layout_alignLeft="@+id/btnDown"
+        android:src="@drawable/arrow_up"
+        android:tag="12" />
+
+    <ImageButton
+        android:id="@+id/btnLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnDown"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/arrow_left"
+        android:tag="18" />
+
+    <ImageButton
+        android:id="@+id/btnDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btnLeft"
+        android:src="@drawable/arrow_down"
+        android:tag="16" />
+
+    <ImageButton
+        android:id="@+id/btnRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnDown"
+        android:layout_toRightOf="@+id/btnDown"
+        android:src="@drawable/arrow_right"
+        android:tag="14" />
+    
+    <ImageButton
+        android:id="@+id/btnZoomin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnCapture"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/zoom_in"
+        android:tag="11" />
+
+    <ImageButton
+        android:id="@+id/btnZoomout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/zoom_out"
+        android:tag="10" />
 
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnUp"
-            android:src="@drawable/arrow_up"
-            android:layout_above="@+id/btnLeft"
-            android:layout_alignLeft="@+id/btnDown"/>
-
-    <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnLeft"
-            android:src="@drawable/arrow_left"
-            android:layout_above="@+id/btnDown"
-            android:layout_alignParentLeft="true"/>
-
-    <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnDown"
-            android:src="@drawable/arrow_down"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/btnLeft"/>
-
-    <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnRight"
-            android:src="@drawable/arrow_right"
-            android:layout_above="@+id/btnDown"
-            android:layout_toRightOf="@+id/btnDown"/>
-
-    <ZoomControls
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/zoomControls"
-            android:layout_below="@+id/btnUp"
-            android:layout_alignParentRight="true"/>
+            android:id="@+id/btnCapture"
+            android:src="@android:drawable/ic_menu_camera"
+            android:layout_above="@+id/btnZoomout"
+            android:layout_toLeftOf="@+id/btnZoomout"/>    
 
 </RelativeLayout>

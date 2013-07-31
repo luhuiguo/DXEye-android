@@ -1,5 +1,7 @@
 package com.daxun.dxeye;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
@@ -7,9 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
-
-import java.util.List;
 
 /**
  * Created by luhuiguo on 13-7-12.
@@ -49,10 +48,13 @@ public class ChannelAdapter extends BaseAdapter {
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        Monitor monitor;
 
         if (convertView == null) {  // if it's not recycled, initialize some attributes
-            imageView = new ImageView(context);
+        	monitor = new Monitor(context);
+        	monitor.setChannel(channels.get(position));
+        	monitor.setStream(1);
+        	monitor.setEnableOSD(true);
 
             Point size = new Point();
 
@@ -60,16 +62,14 @@ public class ChannelAdapter extends BaseAdapter {
                     .getDefaultDisplay().getSize(size);
 
 
-            imageView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, size.x / 8 * 3));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            //imageView.setPadding(1, 1, 1, 1);
+            monitor.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, size.x / 32 * 9 + 1));
+            monitor.setPadding(1, 1, 1, 1);
         } else {
-            imageView = (ImageView) convertView;
+        	monitor = (Monitor) convertView;
         }
 
-        imageView.setImageResource(R.drawable.screen);
 
-        return imageView;
+        return monitor;
     }
 
 
