@@ -4,6 +4,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -84,7 +85,7 @@ public class PreviewActivity extends Activity {
 
 			int cmd = NumberUtils.toInt(v.getTag().toString(), 0);
 			
-			Log.e(TAG,"action:"+event.getAction());
+			//Log.e(TAG,"action:"+event.getAction());
 			
 			PtzTask task = new PtzTask();
 
@@ -135,6 +136,18 @@ public class PreviewActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		Log.d(TAG, "onDestroy");
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+	    Log.d(TAG, "onConfigurationChanged");
+	    // Checks the orientation of the screen
+//	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//	        Toast.makeText(this, "横屏模式", Toast.LENGTH_SHORT).show();
+//	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+//	        Toast.makeText(this, "竖屏模式", Toast.LENGTH_SHORT).show();
+//	    }
 	}
 
 	class PtzTask extends AsyncTask<Integer, Void, Boolean> {

@@ -80,9 +80,11 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 			case MSG_FRAME:
 				Log.d(TAG, "handleMessage");
 				try {
-					Bitmap bitmap = (Bitmap) msg.obj;
+					//Bitmap bitmap = (Bitmap) msg.obj;
+					Payload p = (Payload) msg.obj;
 
 					Monitor monitor = mMonitor.get();
+					Bitmap bitmap  = monitor.getBitmap();
 
 					SurfaceHolder holder = monitor.getHolder();
 					Canvas canvas = null;
@@ -98,6 +100,7 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 							paint.setFilterBitmap(true);
 							paint.setDither(true);
 
+
 							Matrix matrix = new Matrix();
 
 							int dwidth = bitmap.getWidth();
@@ -112,24 +115,47 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 							rectDst.set(0, 0, vwidth, vheight);
 							matrix.setRectToRect(rectSrc, rectDst,
 									Matrix.ScaleToFit.START);
-							// float scale;
-							// float dx;
-							// float dy;
-							// if (dwidth <= vwidth && dheight <= vheight) {
-							// scale = 1.0f;
-							// } else {
-							// scale = Math.min((float) vwidth / (float) dwidth,
-							// (float) vheight / (float) dheight);
-							// }
-							//
-							// dx = (int) ((vwidth - dwidth * scale) * 0.5f +
-							// 0.5f);
-							// dy = (int) ((vheight - dheight * scale) * 0.5f +
-							// 0.5f);
-							//
-							// matrix.setScale(scale, scale);
-							// matrix.postTranslate(dx, dy);
+							
+
+							
+							float scale = Math.min((float) vwidth
+										/ (float) dwidth, (float) vheight
+										/ (float) dheight);
+							
+							int w = (int)(dwidth*scale);
+							int h = (int)(dheight*scale);
+							paint.setTextSize(h/15);
+							
 							canvas.drawBitmap(bitmap, matrix, paint);
+							
+							if (monitor.mEnableOSD) {
+								paint.setColor(Color.WHITE);
+								paint.setTypeface(Typeface.DEFAULT_BOLD);
+								paint.setShadowLayer(1f, 0f, 1f, Color.GRAY);
+								if (p.getLines() != null && p.getLines().size() > 0) {
+									for (Line line : p.getLines()) {
+										Rect bounds = new Rect();
+										int x = line.getX();
+										int y = line.getY();
+										String text = line.getContent();
+										//Log.e(TAG, "line:" + line);
+										paint.getTextBounds(text, 0, text.length(), bounds);
+										FontMetrics fontMetrics = paint.getFontMetrics();  
+										if (x < 0) {
+											x = w - bounds.width();
+										}
+										if (y < 0) {
+											y = h - bounds.height() - (int)fontMetrics.bottom;
+										}
+										
+										y = y - (int)fontMetrics.top;
+
+										canvas.drawText(text, x, y, paint);
+
+									}									
+								}
+						    
+					        }
 						}
 
 					} finally {
@@ -303,7 +329,15 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 
 	public void stop() {
 		Log.d(TAG, "stop");
-		mSession.close(true);
+		try {
+			if(mSession!=null){
+				mSession.close(true);
+			}
+		} catch (Exception e) {
+			Log.w(TAG, e);
+		}
+
+		
 
 	}
 
@@ -341,7 +375,7 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 	@Override
 	public void messageReceived(IoSession session, Object message)
 			throws Exception {
-		Log.d(TAG, "channel " + mChannel + " messageReceived");
+		//Log.d(TAG, "channel " + mChannel + " messageReceived");
 		// Log.d(TAG, "messageReceived: " + message);
 		if (message instanceof PreviewResponse) {
 			PreviewResponse previewResponse = (PreviewResponse) message;
@@ -371,10 +405,10 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 			if (ret < 0) {
 
 			} else {
-				if (mEnableOSD) {
-					drawOSDLines(b, p.getLines());
-				}
-				mHandler.obtainMessage(MSG_FRAME, b).sendToTarget();
+//				if (mEnableOSD) {
+//					drawOSDLines(b, p.getLines());
+//				}
+				mHandler.obtainMessage(MSG_FRAME, p).sendToTarget();
 				mBitmap = b;
 				mVideoWidth = p.getWidth();
 				mVideoHeight = p.getHeight();
@@ -414,13 +448,16 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 
 			Canvas canvas = new Canvas(bitmap);
 
-			Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+			Paint paint = new Paint();
 			paint.setColor(Color.WHITE);
 			paint.setTypeface(Typeface.DEFAULT_BOLD);
-			
+			paint.setAntiAlias(true);
+			paint.setDither(true);
 			
 			paint.setTextSize(bitmap.getHeight()/15);
 			paint.setShadowLayer(1f, 0f, 1f, Color.GRAY);
+			//canvas.drawText("Test", 100, 100, paint);
+			
 			for (Line line : lines) {
 				Rect bounds = new Rect();
 				int x = line.getX();
