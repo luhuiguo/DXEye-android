@@ -1,5 +1,7 @@
 package com.daxun.dxeye;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,7 +33,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         Log.d(TAG, "onCreate");
-        Log.d(TAG, "channels:"+ SNVRClient.getInstance().getMonitors());
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
@@ -62,6 +63,13 @@ public class MainActivity extends FragmentActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+        if(StringUtils.isEmpty(SNVRClient.getInstance().getToken())){
+        	Intent intent = new Intent();
+            intent.setClass(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            MainActivity.this.finish();
+        }
+        
     }
 
     @Override

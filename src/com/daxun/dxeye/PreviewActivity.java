@@ -1,9 +1,11 @@
 package com.daxun.dxeye;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -116,6 +118,12 @@ public class PreviewActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		Log.d(TAG, "onResume");
+        if(StringUtils.isEmpty(SNVRClient.getInstance().getToken())){
+        	Intent intent = new Intent();
+            intent.setClass(PreviewActivity.this, LoginActivity.class);
+            startActivity(intent);
+            PreviewActivity.this.finish();
+        }
 		// monitor.play();
 	}
 

@@ -311,6 +311,7 @@ int Extractor::extractFrame(JNIEnv* env, jobject payload, jobject bitmap) {
 
 		if ((ret = AndroidBitmap_lockPixels(env, bitmap, &pixels)) < 0) {
 			LOGE("AndroidBitmap_lockPixels() failed ! error=%d", ret);
+			return ret;
 		}
 		convertFrameToRGB();
 		fill_bitmap(&info, pixels, pFrameRGB);
