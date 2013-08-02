@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -31,7 +32,8 @@ public class MainActivity extends FragmentActivity {
 
         Log.d(TAG, "onCreate");
         Log.d(TAG, "channels:"+ SNVRClient.getInstance().getMonitors());
-
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
 
         gridView = (GridView) findViewById(R.id.gridView);

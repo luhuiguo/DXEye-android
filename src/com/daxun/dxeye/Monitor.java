@@ -203,6 +203,7 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 		mVideoWidth = 0;
 		mVideoHeight = 0;
 		getHolder().addCallback(this);
+		getHolder().setKeepScreenOn(true);
 		mExtractor = new Extractor();
 	}
 

@@ -3,8 +3,11 @@ package com.daxun.dxeye;
 import java.lang.ref.WeakReference;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 public class Extractor {
+	
+	private static final String TAG = Extractor.class.getSimpleName();
 
 	private int mNativeContext; // accessed by native methods
 
@@ -31,8 +34,13 @@ public class Extractor {
 	public native void native_finalize();
 
 	static {
-		System.loadLibrary("ffmpeg");
-		System.loadLibrary("eye");
-		native_init();
+		try {
+			System.loadLibrary("ffmpeg");
+			System.loadLibrary("eye");
+			native_init();
+		} catch (Exception e) {
+			Log.e(TAG,"System.loadLibrary Error",e);
+		}
+
 	}
 }
