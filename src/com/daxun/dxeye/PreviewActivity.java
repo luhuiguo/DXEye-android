@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 
@@ -39,6 +40,8 @@ public class PreviewActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		setContentView(R.layout.activity_preview);
 
@@ -57,6 +60,7 @@ public class PreviewActivity extends Activity {
 		setTitle(channel.getName());
 
 		monitor.setChannel(channel);
+		//monitor.setStream(1);
 		monitor.setEnableOSD(true);
 
 		btnCapture.setOnClickListener(new View.OnClickListener() {

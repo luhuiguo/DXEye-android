@@ -284,6 +284,28 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 	public void setmSession(IoSession mSession) {
 		this.mSession = mSession;
 	}
+	
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//
+//    
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//
+//        
+//        int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+//        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
+//        //int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+//        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
+//        if (widthSpecMode == MeasureSpec.EXACTLY) {
+//            int width = widthSpecSize;
+//            int height = heightSpecSize;
+//            
+//            height = width * 9 / 16;
+//            
+//            setMeasuredDimension(width, height);
+//        }
+//        
+//    }
 
 	public void play() {
 		Log.d(TAG, "play");
@@ -349,7 +371,7 @@ public class Monitor extends SurfaceView implements Callback, IoHandler {
 
 	@Override
 	public void sessionOpened(IoSession session) throws Exception {
-		Log.d(TAG, "sessionOpened");
+		Log.i(TAG, "sessionOpened"+session);
 		session.write(new PreviewRequest(SNVRClient.getInstance().getToken(),
 				(short) mChannel.getId(), mStream));
 

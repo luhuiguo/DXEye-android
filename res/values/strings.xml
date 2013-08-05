@@ -2,29 +2,29 @@
 <resources>
 
     <string name="app_name">DXEye</string>
-    <string name="action_channel">通道</string>
-    <string name="action_logout">注销</string>
-    <string name="logout">注销</string>
-    <string name="confirm_logout">确认要退出登录吗？</string>
+    <string name="action_channel">Channel</string>
+    <string name="action_logout">Logout</string>
+    <string name="logout">Logout</string>
+    <string name="confirm_logout">Confirm to logout?</string>
 
-    <string name="uncaught_exception">很抱歉,程序出现异常,即将退出.</string>
-    <string name="logining">正在登录...</string>
-    <string name="login_failed">登录失败，请检查输入是否正确</string>
+    <string name="uncaught_exception">Sorry, an unexpected error has occurred. Please restart the application</string>
+    <string name="logining">Logining&#8230;</string>
+    <string name="login_failed">Login failed, please check the input</string>
 
-    <string name="retrieving_channels">正在获取通道列表...</string>
-    <string name="retrieve_channels_failed">无法获得通道列表</string>
-    <string name="select_channels">选择通道</string>
-
-    <string name="confirm_exit">再按一次退出程序</string>
-    <string name="login">登录</string>
-    <string name="host">地址：</string>
-    <string name="port">端口：</string>
-    <string name="username">用户：</string>
-    <string name="password">密码：</string>
-    <string name="rememberMe">记住密码</string>
-    <string name="host_hint">服务器地址</string>
-    <string name="port_hint">服务器端口</string>
-    <string name="username_hint">登录用户</string>
-    <string name="password_hint">登录密码</string>
+    <string name="retrieving_channels">Retrieving the channel list&#8230;</string>
+    <string name="retrieve_channels_failed">Unable to get the channel list</string>
+    <string name="select_channels">Select the channels</string>
+    <string name="channels_limit">You can not select more than 4 channels</string>
+    <string name="confirm_exit">Press again to exit</string>
+    <string name="login">Login</string>
+    <string name="host">Host：</string>
+    <string name="port">Port：</string>
+    <string name="username">Username：</string>
+    <string name="password">Password：</string>
+    <string name="rememberMe">Remember me</string>
+    <string name="host_hint">Server host</string>
+    <string name="port_hint">Server port</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
 
 </resources>

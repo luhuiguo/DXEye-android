@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DXEye</string>
+    <string name="action_channel">通道</string>
+    <string name="action_logout">註銷</string>
+    <string name="logout">註銷</string>
+    <string name="confirm_logout">確認要退出登錄嗎？</string>
+
+    <string name="uncaught_exception">很抱歉,程序出現異常,即將退出</string>
+    <string name="logining">正在登錄……</string>
+    <string name="login_failed">登錄失敗，請檢查輸入是否正確</string>
+
+    <string name="retrieving_channels">正在獲取通道列表……</string>
+    <string name="retrieve_channels_failed">無法獲得通道列表</string>
+    <string name="select_channels">選擇通道</string>
+    <string name="channels_limit">最多只能同時預覽四個通道</string>
+    <string name="confirm_exit">再按一次退出程序</string>
+    <string name="login">登錄</string>
+    <string name="host">地址：</string>
+    <string name="port">端口：</string>
+    <string name="username">用戶：</string>
+    <string name="password">密碼：</string>
+    <string name="rememberMe">記住密碼</string>
+    <string name="host_hint">服務器地址</string>
+    <string name="port_hint">服務器端口</string>
+    <string name="username_hint">登錄用戶</string>
+    <string name="password_hint">登錄密碼</string>
+
+</resources>

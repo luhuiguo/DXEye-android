@@ -2,13 +2,13 @@ package com.daxun.dxeye;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -20,7 +20,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
 
     private static final String TAG = ChannelActivity.class.getSimpleName();
 
@@ -55,9 +55,12 @@ public class MainActivity extends FragmentActivity {
 
             }
         });
+        
+
 
 
     }
+    
 
     @Override
     public void onResume() {
@@ -85,8 +88,10 @@ public class MainActivity extends FragmentActivity {
 
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        	//gridView.setNumColumns(2);
 
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+        	//gridView.setNumColumns(1);
 
         }
     }

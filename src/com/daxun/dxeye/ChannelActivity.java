@@ -1,18 +1,20 @@
 package com.daxun.dxeye;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.widget.Toast;
 
 /**
  * Created by luhuiguo on 13-6-28.
@@ -31,6 +33,7 @@ public class ChannelActivity extends ListActivity {
 //        List<Channel> selected = (List<Channel>)getIntent().getSerializableExtra(Constants.CHANNELS_KEY);
 //
 //        Log.d(TAG,"selected:" + selected);
+
 
 
 
@@ -71,6 +74,20 @@ public class ChannelActivity extends ListActivity {
 
 
         return list;
+
+    }
+    
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        
+        if (l.getCheckedItemCount() > 4){
+        	l.setItemChecked(position, false);
+        	Toast.makeText(getApplicationContext(), R.string.channels_limit,
+                    Toast.LENGTH_SHORT).show();
+        }
+        
+
 
     }
 
